@@ -11,3 +11,5 @@
 .terraform.backup.lock.info.backup.backup.backup.backup.backup.backup
 .terraform.backup.lock.info.backup.backup.backup.backup.backup.backup.backup
 .terraform.backup.lock.info.backup.backup.backup.backup.backup.backup.backup.backup
+
+lambda/*
