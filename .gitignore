@@ -1,0 +1,13 @@
+.terraform
+.terraform.lock.hcl
+.terraform.tfstate
+.terraform.backup
+.terraform.backup.lock.info
+.terraform.backup.lock.info.backup
+.terraform.backup.lock.info.backup.backup
+.terraform.backup.lock.info.backup.backup.backup
+.terraform.backup.lock.info.backup.backup.backup.backup
+.terraform.backup.lock.info.backup.backup.backup.backup.backup
+.terraform.backup.lock.info.backup.backup.backup.backup.backup.backup
+.terraform.backup.lock.info.backup.backup.backup.backup.backup.backup.backup
+.terraform.backup.lock.info.backup.backup.backup.backup.backup.backup.backup.backup
