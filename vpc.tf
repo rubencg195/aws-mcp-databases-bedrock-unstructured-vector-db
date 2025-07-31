@@ -2,7 +2,7 @@ resource "aws_vpc" "main" {
   cidr_block           = local.cidr_block
   enable_dns_support   = local.enable_dns_support
   enable_dns_hostnames = local.enable_dns_hostnames
-  tags = merge(local.tags, { Name = "main-vpc" })
+  tags = merge(local.tags, { Name = local.vpc_name})
 }
 
 resource "aws_internet_gateway" "gw" {
@@ -88,4 +88,16 @@ resource "aws_flow_log" "vpc" {
   traffic_type         = "ALL"
   iam_role_arn         = aws_iam_role.vpc_logs_role.arn
   tags                 = merge(local.tags, { Name = "flow-logs" })
+}
+
+resource "aws_security_group" "opensearch" {
+  name   = "${local.vpc_name}-opensearch-sg"
+  vpc_id = aws_vpc.main.id
+}
+
+resource "aws_opensearchserverless_vpc_endpoint" "opensearch" {
+  name               = "${local.vpc_name}-opensearch"
+  vpc_id             = aws_vpc.main.id
+  subnet_ids         = aws_subnet.private.*.id
+  security_group_ids = [aws_security_group.opensearch.id]
 }

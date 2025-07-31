@@ -45,9 +45,19 @@ resource "aws_iam_policy" "lambda_bedrock_policy" {
           "s3:ListBucket"
         ]
         Resource = [
-          aws_s3_bucket.knowledge_base.arn,
-          "${aws_s3_bucket.knowledge_base.arn}/*"
+          aws_s3_bucket.knowledge_base_input_data.arn,
+          "${aws_s3_bucket.knowledge_base_input_data.arn}/*",
+          aws_s3_bucket.knowledge_base_storage.arn,
+          "${aws_s3_bucket.knowledge_base_storage.arn}/*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "bedrock:Retrieve",
+          "bedrock:RetrieveAndGenerate"
+        ]
+        Resource = aws_bedrockagent_knowledge_base.main.arn
       }
     ]
   })

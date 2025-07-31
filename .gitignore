@@ -1,6 +1,7 @@
 .terraform
 .terraform.lock.hcl
 .terraform.tfstate
+terraform.tfstate.*
 .terraform.backup
 .terraform.backup.lock.info
 .terraform.backup.lock.info.backup
@@ -13,3 +14,4 @@
 .terraform.backup.lock.info.backup.backup.backup.backup.backup.backup.backup.backup
 
 lambda/*
+opensearch_collection.txt

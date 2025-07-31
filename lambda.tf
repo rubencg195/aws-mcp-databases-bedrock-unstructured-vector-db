@@ -1,6 +1,6 @@
 # Create the Lambda function directory and Python file using templatefile
 resource "local_file" "lambda_bedrock_invoke_py" {
-  content = templatefile("${path.module}/lambda_script.py", {
+  content = templatefile("${path.module}/lambda.py.tmpl", {
     bedrock_region = local.region
     knowledge_base_bucket = local.knowledge_base_bucket_name
   })
@@ -32,6 +32,9 @@ resource "aws_lambda_function" "bedrock_invoke" {
   environment {
     variables = {
       BEDROCK_REGION = local.region
+      KNOWLEDGE_BASE_ID = aws_bedrockagent_knowledge_base.main.id
+      MODEL_ID = local.mcp_client_model_id
+      LOG_LEVEL = "INFO"
     }
   }
   tags = local.tags

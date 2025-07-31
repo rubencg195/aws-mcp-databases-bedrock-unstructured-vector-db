@@ -1,0 +1,21 @@
+Vendor Name,Price,Date,Transaction ID,Category,Payment Method,Customer Name,Location,Status,Notes
+Acme Corp,120.50,2024-05-01,TXN1001,Office Supplies,Credit Card,John Doe,New York,Completed,First order of the month
+BetaMart,89.99,2024-05-02,TXN1002,Electronics,PayPal,Jane Smith,San Francisco,Completed,Discount applied
+Gamma Goods,45.00,2024-05-03,TXN1003,Stationery,Debit Card,Emily Chen,Chicago,Completed,Repeat customer
+Delta Supplies,230.75,2024-05-04,TXN1004,Furniture,Bank Transfer,Michael Brown,Los Angeles,Pending,Awaiting shipment
+Epsilon Market,15.20,2024-05-05,TXN1005,Snacks,Cash,Olivia Lee,Houston,Completed,Small purchase
+Zeta Electronics,399.99,2024-05-06,TXN1006,Electronics,Credit Card,David Kim,Seattle,Completed,Extended warranty included
+Eta Apparel,59.95,2024-05-07,TXN1007,Clothing,PayPal,Sophia Patel,Miami,Completed,Gift wrapped
+Theta Books,22.50,2024-05-08,TXN1008,Books,Debit Card,William Clark,Boston,Completed,Requested invoice
+Iota Foods,78.30,2024-05-09,TXN1009,Groceries,Credit Card,Isabella Martinez,Denver,Completed,Organic products
+Kappa Tools,150.00,2024-05-10,TXN1010,Hardware,Bank Transfer,James Wilson,Atlanta,Completed,Express delivery
+Lambda Sports,99.99,2024-05-11,TXN1011,Sports Equipment,Cash,Charlotte Davis,Portland,Completed,Team order
+Mu Music,12.99,2024-05-12,TXN1012,Music,PayPal,Lucas Garcia,Las Vegas,Completed,Digital download
+Nu Health,200.00,2024-05-13,TXN1013,Healthcare,Credit Card,Mia Rodriguez,Orlando,Completed,Insurance reimbursed
+Xi Travel,350.00,2024-05-14,TXN1014,Travel,Bank Transfer,Benjamin Lee,San Diego,Pending,Travel voucher issued
+Omicron Gifts,25.00,2024-05-15,TXN1015,Gifts,Debit Card,Evelyn Walker,Philadelphia,Completed,Birthday present
+Pi Pets,60.00,2024-05-16,TXN1016,Pet Supplies,Credit Card,Henry Young,Dallas,Completed,First-time buyer
+Rho Home,180.00,2024-05-17,TXN1017,Home Decor,PayPal,Grace Hall,San Jose,Completed,Seasonal sale
+Sigma Tech,299.99,2024-05-18,TXN1018,Electronics,Credit Card,Jack Allen,Austin,Completed,Pre-order
+Tau Toys,35.50,2024-05-19,TXN1019,Toys,Cash,Victoria King,Columbus,Completed,Gift receipt included
+Upsilon Auto,500.00,2024-05-20,TXN1020,Automotive,Bank Transfer,Daniel Wright,Charlotte,Completed,Service package
