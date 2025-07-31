@@ -25,3 +25,6 @@
 ![ModelsAvailable](./images/models-available.png)
 
 15. Click on the source and then click `Sync`
+16. Test it by going to the playground at http://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/knowledge-bases/aws-mcp-bedrock-demo-knowledge-base/, select the model `Cloude Sonnet 3.7` and a prompt like `Find me all transactions done in New York` and the output is as follows,
+
+![TestKnowledgeBase](./images/test-knowledgebase.png)
