@@ -150,10 +150,16 @@ resource "aws_kms_alias" "bedrock_knowledge_base_key_alias" {
 }
 
 resource "local_file" "opensearch_collection_info" {
-  filename = "${path.module}/opensearch_collection.txt"
+  filename = "${path.module}/.opensearch_collection.txt"
   content  = <<EOT
 OpenSearch Collection Endpoint:
 ${aws_opensearchserverless_collection.knowledge_base.collection_endpoint}
+
+OpenSearch Collection ID:
+${aws_opensearchserverless_collection.knowledge_base.id}
+
+OpenSearch Collection ARN:
+${aws_opensearchserverless_collection.knowledge_base.arn}
 EOT
 }
 

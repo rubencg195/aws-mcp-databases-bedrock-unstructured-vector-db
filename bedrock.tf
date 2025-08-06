@@ -54,6 +54,22 @@ resource "aws_bedrockagent_knowledge_base" "main" {
   tags = local.tags
 }
 
+resource "aws_bedrockagent_data_source" "example" {
+  knowledge_base_id = aws_bedrockagent_knowledge_base.main.id
+  name              = local.project_name
+  data_deletion_policy = "RETAIN"
+  data_source_configuration {
+    type = "S3"
+    s3_configuration {
+      bucket_arn = aws_s3_bucket.knowledge_base_input_data.arn
+      inclusion_prefixes = [local.knowledge_base_input_data_prefix]
+    }
+  }
+  depends_on = [
+    aws_bedrockagent_knowledge_base.main
+  ]
+}
+
 # IAM Role for Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
   name = "${local.project_name}-bedrock-kb-role"
@@ -128,7 +144,7 @@ resource "aws_iam_role_policy" "bedrock_knowledge_base_policy" {
         ]
         Resource = [
           local.embedding_model_arn,
-          "arn:aws:bedrock:${local.region}::foundation-model/*"
+          "arn:aws:bedrock:${data.aws_region.current.name}::foundation-model/*"
         ]
       },
       {

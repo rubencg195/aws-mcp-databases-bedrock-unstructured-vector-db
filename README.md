@@ -28,3 +28,7 @@
 16. Test it by going to the playground at http://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/knowledge-bases/aws-mcp-bedrock-demo-knowledge-base/, select the model `Cloude Sonnet 3.7` and a prompt like `Find me all transactions done in New York` and the output is as follows,
 
 ![TestKnowledgeBase](./images/test-knowledgebase.png)
+
+17. To test using the created lambda, navigate to https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions/aws-mcp-bedrock-demo-bedrock-invoke?tab=testing, and click `Test
+
+![LambdaTest](./images/lambda-test.png)

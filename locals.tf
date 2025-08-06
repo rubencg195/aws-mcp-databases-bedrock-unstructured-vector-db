@@ -1,6 +1,5 @@
 locals {
     project_name = "aws-mcp-bedrock-demo"
-    region       = "us-east-1"
 
     # VPC Configuration
     vpc_name               = "main-vpc"  
@@ -18,8 +17,9 @@ locals {
     knowledge_base_csv_files = [
         "knowledge-base-1.csv",
     ]
-    mcp_client_model_id   = "anthropic.claude-3-5-sonnet-20241022-v2:0"
-    embedding_model_arn   = "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0"
+    knowledge_base_input_data_prefix = "input-data/"
+    mcp_client_model_arn   = "arn:aws:bedrock:${data.aws_region.current.name}::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0" # ONLY 3 AND 3.5 ARE AVAILABLE FOR ON DEMAND
+    embedding_model_arn    = "arn:aws:bedrock:${data.aws_region.current.name}::foundation-model/amazon.titan-embed-text-v2:0"
     knowledge_base_bucket_storage_uri = "s3://${aws_s3_bucket.knowledge_base_storage.bucket}/"
 
     # OpenSearch Configuration
@@ -32,6 +32,21 @@ locals {
     opensearch_mappingtextfield = "AMAZON_BEDROCK_TEXT_CHUNK"
     opensearch_mappingmetadatafield = "AMAZON_BEDROCK_METADATA"
     opensearch_embedding_dimensions = 1024
+
+    website_assets = {
+    "index.html" = {
+      source       = "${path.module}/website/index.html"
+      content_type = "text/html"
+    }
+    "style.css" = {
+      source       = "${path.module}/website/style.css"
+      content_type = "text/css"
+    }
+    "index.js" = {
+      source       = "${path.module}/website/index.js"
+      content_type = "application/javascript"
+    }
+  }
 
     tags = {
         Owner      = "rubencg195@hotmail.com"
