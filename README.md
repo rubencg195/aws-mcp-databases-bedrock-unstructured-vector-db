@@ -1,4 +1,4 @@
-# AWS MCP Client / Server Environment Demo
+# AWS Bedrock Knowledge Bases MCP Client + OpenSearch Vector Database
 
 # Setup Steps
 
