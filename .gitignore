@@ -19,3 +19,4 @@ terraform.tfstate.*
 
 lambda/*
 .opensearch_collection.txt
+.website_info.txt

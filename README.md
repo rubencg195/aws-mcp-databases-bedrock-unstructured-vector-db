@@ -37,3 +37,8 @@
 
   - `tofu destroy --target aws_bedrockagent_knowledge_base.main`
   - `tofu destroy --target aws_opensearchserverless_collection.knowledge_base`
+
+19. To navigate to the website, locate the  `.website_info.txt` file and click on the website link and login with the cognito username and password
+
+![WebsiteLogin](./images/website-login.png)
+
