@@ -12,30 +12,6 @@ resource "aws_opensearchserverless_collection" "knowledge_base" {
   tags = local.tags
 }
 
-# # Create the OpenSearch index using AWS CLI
-# resource "null_resource" "create_opensearch_index" {
-#   triggers = {
-#     collection_id = aws_opensearchserverless_collection.knowledge_base.id
-#   }
-
-#   provisioner "local-exec" {
-#     command = <<-EOT
-#       aws opensearchserverless create-index \
-#         --collection-id ${aws_opensearchserverless_collection.knowledge_base.id} \
-#         --name ${aws_opensearchserverless_collection.knowledge_base.name} \
-#         --type VECTORSEARCH \
-#         --region ${local.region}
-#     EOT
-#   }
-
-#   depends_on = [
-#     aws_opensearchserverless_collection.knowledge_base,
-#     aws_opensearchserverless_security_policy.knowledge_base_encryption,
-#     aws_opensearchserverless_security_policy.knowledge_base_network,
-#     aws_opensearchserverless_access_policy.knowledge_base
-#   ]
-# }
-
 # OpenSearch Serverless Encription Security Policy
 resource "aws_opensearchserverless_security_policy" "knowledge_base_encryption" {
   name = local.opensearch_policy_encryption_name

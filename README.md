@@ -32,3 +32,8 @@
 17. To test using the created lambda, navigate to https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions/aws-mcp-bedrock-demo-bedrock-invoke?tab=testing, and click `Test
 
 ![LambdaTest](./images/lambda-test.png)
+
+18. To save on cost I recommend deleting the most costly components, the knowledge base and the opensearch vector database after each test. Do it in the following order to avoid errors,
+
+  - `tofu destroy --target aws_bedrockagent_knowledge_base.main`
+  - `tofu destroy --target aws_opensearchserverless_collection.knowledge_base`
