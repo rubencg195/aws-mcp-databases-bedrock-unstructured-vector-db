@@ -84,12 +84,18 @@ This script will upload both your CSV file and its corresponding metadata file t
 
 #### Step 7: Sync Knowledge Base
 1. Go to the [AWS Bedrock Console](https://console.aws.amazon.com/bedrock/)
-2. Navigate to **Knowledge bases** in the left sidebar
-3. Find your knowledge base named `mcp-demo-knowledge-base`
-4. Click on the knowledge base to open its details
-5. Click the **Sync** button to populate the knowledge base with data from your S3 bucket
-6. Wait for the sync process to complete (this may take several minutes)
-7. Once synced, your knowledge base will be ready for queries with enhanced metadata support
+2. In the left sidebar, click on **Model access** and ensure the required Bedrock models are enabled for your account.  
+   ![Enable Bedrock Models](./images/models-available.png)
+3. Navigate to **Knowledge bases** in the left sidebar
+4. Find your knowledge base named `mcp-demo-knowledge-base`
+6. Click on the knowledge base to open its details
+6. Click the **Sync** button to populate the knowledge base with data from your S3 bucket
+7. After the sync completes, test your knowledge base in the Bedrock Playground:
+   - Click the **Test in playground** button on the knowledge base details page
+   - Enter a sample question to verify your data is available for retrieval
+   - Refer to the screenshot below for guidance:
+     ![Test Knowledge Base in Playground](./images/test-knowledgebase.png)
+8. Once synced, your knowledge base will be ready for queries with enhanced metadata support
 
 #### Step 8: Test Lambda Function
 1. Go to the [AWS Lambda Console](https://console.aws.amazon.com/lambda/)
@@ -100,11 +106,6 @@ This script will upload both your CSV file and its corresponding metadata file t
 6. Click **Create new event** if no test event exists
 7. Enter a test name (e.g., "test-bedrock-query")
 8. Use the following test event JSON:
-   ```json
-   {
-     "question": "Find me all transactions done in New York"
-   }
-   ```
    
    **Additional example questions you can test:**
    ```json
@@ -118,6 +119,8 @@ This script will upload both your CSV file and its corresponding metadata file t
      "question": "How many assets exist in the year 2018?"
    }
    ```
+
+![Test Lambda Function](./images/lambda-test.png)
    
    **Note**: The knowledge base ID is automatically provided via environment variables, so you don't need to specify it in the test event. If you want to override it, you can add `"knowledge_base_id": "your-knowledge-base-id"` to the JSON.
 9. Click **Save** and then **Test**
@@ -367,57 +370,11 @@ To preserve column names and structure in each chunk, this project uses **metada
 
 #### Metadata File Structure
 
-For each CSV file, create a corresponding `filename.csv.metadata.json` file:
+For each CSV file, create a corresponding `filename.csv.metadata.json` file that describes the structure and metadata fields for your data. 
 
-```json
-{
-    "metadataAttributes": {
-        "source": "transaction_data",
-        "version": "1.0"
-    },
-    "documentStructureConfiguration": {
-        "type": "RECORD_BASED_STRUCTURE_METADATA",
-        "recordBasedStructureMetadata": {
-            "contentFields": [
-                {
-                    "fieldName": "Notes"
-                }
-            ],
-            "metadataFieldsSpecification": {
-                "fieldsToInclude": [
-                    {
-                        "fieldName": "Vendor Name"
-                    },
-                    {
-                        "fieldName": "Price"
-                    },
-                    {
-                        "fieldName": "Date"
-                    },
-                    {
-                        "fieldName": "Transaction ID"
-                    },
-                    {
-                        "fieldName": "Category"
-                    },
-                    {
-                        "fieldName": "Payment Method"
-                    },
-                    {
-                        "fieldName": "Customer Name"
-                    },
-                    {
-                        "fieldName": "Location"
-                    },
-                    {
-                        "fieldName": "Status"
-                    }
-                ]
-            }
-        }
-    }
-}
-```
+For example, to see a real metadata file for an asset management CSV, refer to [`knowledge-bases/asset-replacements.csv.metadata.json`](knowledge-bases/asset-replacements.csv.metadata.json) in this repository. This file specifies which columns are treated as content and which are included as metadata, following the required format for Bedrock Knowledge Bases.
+
+You can use this asset metadata file as a template for your own CSVs, adjusting the `contentFields` and `fieldsToInclude` as needed for your data.
 
 #### Benefits of Metadata Configuration
 
