@@ -6,6 +6,7 @@ terraform.tfstate.*
 .terraform.lock.hcl
 .terraform.tfstate
 terraform.tfstate.*
+.terraform.tfstate.*
 .terraform.backup
 .terraform.backup.lock.info
 .terraform.backup.lock.info.backup
@@ -20,3 +21,5 @@ terraform.tfstate.*
 lambda/*
 .opensearch_collection.txt
 .website_info.txt
+.old
+.dependbuild

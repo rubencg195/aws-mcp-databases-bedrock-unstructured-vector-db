@@ -58,7 +58,7 @@ def lambda_handler(event, context):
     print(os.environ.get("KNOWLEDGE_BASE_ID"))
     bedrock = boto3.client("bedrock-agent-runtime", region_name=os.environ.get("BEDROCK_REGION", "us-east-1"))
     model_arn = event.get("model_arn", os.environ.get("MODEL_ARN"))
-    prompt = event.get("prompt", "Find me all transactions done in New York.")
+    prompt = event.get("question", "Find me all transactions done in New York.")
     knowledge_base_id = event.get("knowledge_base_id", os.environ.get("KNOWLEDGE_BASE_ID"))
     
     try:
@@ -78,6 +78,7 @@ def lambda_handler(event, context):
 
         return {
             "statusCode": 200,
+            "question": prompt,
             "output": output,
             "citations": citations
         }

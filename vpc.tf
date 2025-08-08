@@ -95,9 +95,10 @@ resource "aws_security_group" "opensearch" {
   vpc_id = aws_vpc.main.id
 }
 
-resource "aws_opensearchserverless_vpc_endpoint" "opensearch" {
-  name               = "${local.vpc_name}-opensearch"
-  vpc_id             = aws_vpc.main.id
-  subnet_ids         = aws_subnet.private.*.id
-  security_group_ids = [aws_security_group.opensearch.id]
-}
+# TODO: Setup VPCe lockdown Communication between OpenSearch and Bedrock
+# resource "aws_opensearchserverless_vpc_endpoint" "opensearch" {
+#   name               = "${local.vpc_name}-opensearch"
+#   vpc_id             = aws_vpc.main.id
+#   subnet_ids         = aws_subnet.private.*.id
+#   security_group_ids = [aws_security_group.opensearch.id]
+# }
