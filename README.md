@@ -74,16 +74,24 @@ aws rds-data execute-statement \
   --sql "SELECT version();"
 ```
 
-#### Step 6: Sync Knowledge Base
+#### Step 6: Upload Data Files
+```bash
+# Upload CSV and metadata files to S3
+powershell -ExecutionPolicy Bypass -File upload-data.ps1
+```
+
+This script will upload both your CSV file and its corresponding metadata file to the S3 bucket.
+
+#### Step 7: Sync Knowledge Base
 1. Go to the [AWS Bedrock Console](https://console.aws.amazon.com/bedrock/)
 2. Navigate to **Knowledge bases** in the left sidebar
 3. Find your knowledge base named `mcp-demo-knowledge-base`
 4. Click on the knowledge base to open its details
 5. Click the **Sync** button to populate the knowledge base with data from your S3 bucket
 6. Wait for the sync process to complete (this may take several minutes)
-7. Once synced, your knowledge base will be ready for queries
+7. Once synced, your knowledge base will be ready for queries with enhanced metadata support
 
-#### Step 7: Test Lambda Function
+#### Step 8: Test Lambda Function
 1. Go to the [AWS Lambda Console](https://console.aws.amazon.com/lambda/)
 2. Navigate to **Functions** in the left sidebar
 3. Find your Lambda function named `mcp-demo-bedrock-invoke`
@@ -275,6 +283,184 @@ tofu destroy --auto-approve
 - [AWS Bedrock Documentation](https://docs.aws.amazon.com/bedrock/)
 - [pgvector Documentation](https://github.com/pgvector/pgvector)
 - [OpenTofu Documentation](https://opentofu.org/docs/)
+
+## 🔄 Chunking Strategy Configuration
+
+This project uses **Fixed-size chunking** for optimal processing of structured CSV data. Here's why this strategy was chosen and how it's configured:
+
+### Why Fixed-size Chunking?
+
+For CSV data where each row represents a complete transaction record, **Fixed-size chunking** is the optimal choice because:
+
+1. **Row Preservation**: Each row is treated as a separate, complete chunk
+2. **No Overlap Control**: Zero overlap ensures clean separation between records
+3. **Predictable Behavior**: Consistent chunk boundaries aligned with data structure
+4. **Structured Data Optimization**: Perfect for tabular data like transaction records
+
+### Current Configuration
+
+```hcl
+chunking_strategy = "FIXED_SIZE"
+fixed_size_chunking_configuration {
+  max_tokens = 2048
+  overlap_percentage = 0  # No overlap between chunks
+}
+```
+
+### Configuration Details
+
+- **`max_tokens = 2048`**: Sufficient to accommodate multiple rows if needed, but typically each row fits within this limit
+- **`overlap_percentage = 1`**: Ensures no information bleeding between rows
+- **Strategy**: `FIXED_SIZE` provides deterministic chunking based on token count. The value cannot be zero.
+
+### Alternative Strategies (Not Used)
+
+**Semantic Chunking** ❌
+- Focuses on semantic meaning rather than row boundaries
+- Risk of splitting rows across chunks or combining multiple rows
+- Better suited for unstructured text documents
+
+**Hierarchical Chunking** ❌
+- Creates parent-child relationships between chunks
+- May not preserve row integrity
+- Better suited for documents with natural hierarchical structure
+
+### Token Calculation for CSV Rows
+
+Based on the sample data in `knowledge-bases/knowledge-base-1.csv`:
+- Average row length: ~100-150 characters
+- Estimated tokens per row: 25-40 tokens
+- Current `max_tokens = 2048` can accommodate 50+ rows if needed
+
+### Fine-tuning Recommendations
+
+If you need to adjust the chunking behavior:
+
+**For shorter rows:**
+```hcl
+fixed_size_chunking_configuration {
+  max_tokens = 512
+  overlap_percentage = 0
+}
+```
+
+**For larger rows:**
+```hcl
+fixed_size_chunking_configuration {
+  max_tokens = 4096
+  overlap_percentage = 0
+}
+```
+
+### Benefits for Your Use Case
+
+1. **Data Integrity**: Each transaction record remains complete within its chunk
+2. **Query Accuracy**: Retrieval results contain full context of individual transactions
+3. **Consistent Performance**: Predictable chunk sizes optimize vector search
+4. **Clean Boundaries**: No overlap prevents confusion between different records
+
+This configuration ensures that your CSV transaction data is processed optimally for RAG (Retrieval-Augmented Generation) applications, maintaining the integrity of each individual record while enabling efficient similarity search and retrieval.
+
+### 📋 Column Name Preservation with Metadata
+
+To preserve column names and structure in each chunk, this project uses **metadata configuration** with CSV files:
+
+#### Metadata File Structure
+
+For each CSV file, create a corresponding `filename.csv.metadata.json` file:
+
+```json
+{
+    "metadataAttributes": {
+        "source": "transaction_data",
+        "version": "1.0"
+    },
+    "documentStructureConfiguration": {
+        "type": "RECORD_BASED_STRUCTURE_METADATA",
+        "recordBasedStructureMetadata": {
+            "contentFields": [
+                {
+                    "fieldName": "Notes"
+                }
+            ],
+            "metadataFieldsSpecification": {
+                "fieldsToInclude": [
+                    {
+                        "fieldName": "Vendor Name"
+                    },
+                    {
+                        "fieldName": "Price"
+                    },
+                    {
+                        "fieldName": "Date"
+                    },
+                    {
+                        "fieldName": "Transaction ID"
+                    },
+                    {
+                        "fieldName": "Category"
+                    },
+                    {
+                        "fieldName": "Payment Method"
+                    },
+                    {
+                        "fieldName": "Customer Name"
+                    },
+                    {
+                        "fieldName": "Location"
+                    },
+                    {
+                        "fieldName": "Status"
+                    }
+                ]
+            }
+        }
+    }
+}
+```
+
+#### Benefits of Metadata Configuration
+
+1. **Column Name Retention**: Each chunk preserves original column names as metadata
+2. **Structured Queries**: Enable field-specific queries like "Vendor Name = 'Acme Corp'"
+3. **Enhanced Context**: AI models understand field semantics and relationships
+4. **Better Retrieval**: More precise matching based on field names and values
+
+#### Example Enhanced Queries
+
+With metadata configuration, you can now ask:
+- "Find all transactions where Vendor Name contains 'Acme'"
+- "Show me transactions with Price greater than $100"
+- "List all transactions in New York Location"
+- "How many transactions used Credit Card payment method?"
+
+#### File Requirements
+
+- **CSV Format**: RFC4180 compliant, UTF-8 encoded
+- **Header Row**: Must include column names in first row
+- **Metadata File**: Must be named `filename.csv.metadata.json`
+- **Upload Both**: Both CSV and metadata files must be uploaded to S3
+
+#### Terraform Integration
+
+Your Terraform configuration automatically handles metadata files:
+
+1. **Upload Files**: Use the provided script to upload both files:
+   ```bash
+   powershell -ExecutionPolicy Bypass -File upload-data.ps1
+   ```
+
+2. **Automatic Detection**: Bedrock automatically detects and processes metadata files when they're in the same S3 location as the corresponding CSV files
+
+3. **No Additional Configuration**: Your existing `aws_bedrockagent_data_source` configuration already supports metadata processing
+
+4. **Sync Knowledge Base**: After uploading, sync your knowledge base in the AWS Bedrock Console to process the files with metadata
+
+## 📚 References
+
+- [Amazon Bedrock Knowledge Bases now supports advanced parsing, chunking, and query reformulation giving greater control of accuracy in RAG based applications](https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-knowledge-bases-now-supports-advanced-parsing-chunking-and-query-reformulation-giving-greater-control-of-accuracy-in-rag-based-applications/)
+- [How content chunking works for knowledge bases - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)
+- [OpenTofu Registry: bedrockagent_data_source](https://search.opentofu.org/provider/hashicorp/aws/latest/docs/resources/bedrockagent_data_source)
 
 ---
 

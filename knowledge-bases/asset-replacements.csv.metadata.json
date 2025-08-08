@@ -1,0 +1,80 @@
+{
+    "metadataAttributes": {
+        "source": "asset_management_data",
+        "version": "1.0",
+        "description": "Facility asset replacement and maintenance data for school buildings",
+        "data_type": "asset_management",
+        "organization": "FMX School District"
+    },
+    "documentStructureConfiguration": {
+        "type": "RECORD_BASED_STRUCTURE_METADATA",
+        "recordBasedStructureMetadata": {
+            "contentFields": [
+                {
+                    "fieldName": "Tag"
+                }
+            ],
+            "metadataFieldsSpecification": {
+                "fieldsToInclude": [
+                    {
+                        "fieldName": "Type"
+                    },
+                    {
+                        "fieldName": "Building"
+                    },
+                    {
+                        "fieldName": "Replacement asset value"
+                    },
+                    {
+                        "fieldName": "Installation date"
+                    },
+                    {
+                        "fieldName": "Planned replacement date"
+                    },
+                    {
+                        "fieldName": "Estimated end-of-life"
+                    },
+                    {
+                        "fieldName": "Remaining useful life"
+                    },
+                    {
+                        "fieldName": "Estimated Replacement Cost"
+                    },
+                    {
+                        "fieldName": "Estimated Replacement Date"
+                    },
+                    {
+                        "fieldName": "Installation Date"
+                    },
+                    {
+                        "fieldName": "Warranty Expiration Date"
+                    },
+                    {
+                        "fieldName": "Lifetime maintenance cost"
+                    },
+                    {
+                        "fieldName": "Last 12 months maintenance cost"
+                    },
+                    {
+                        "fieldName": "Average annual maintenance cost"
+                    },
+                    {
+                        "fieldName": "MC/RAV(%)"
+                    },
+                    {
+                        "fieldName": "Manufacturer"
+                    },
+                    {
+                        "fieldName": "Date Purchased"
+                    },
+                    {
+                        "fieldName": "Filter size"
+                    },
+                    {
+                        "fieldName": "Vin #"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "metadataAttributes": {
+        "source": "transaction_data",
+        "version": "1.0",
+        "description": "Transaction records with vendor, customer, and payment information"
+    },
+    "documentStructureConfiguration": {
+        "type": "RECORD_BASED_STRUCTURE_METADATA",
+        "recordBasedStructureMetadata": {
+            "contentFields": [
+                {
+                    "fieldName": "Notes"
+                }
+            ],
+            "metadataFieldsSpecification": {
+                "fieldsToInclude": [
+                    {
+                        "fieldName": "Vendor Name"
+                    },
+                    {
+                        "fieldName": "Price"
+                    },
+                    {
+                        "fieldName": "Date"
+                    },
+                    {
+                        "fieldName": "Transaction ID"
+                    },
+                    {
+                        "fieldName": "Category"
+                    },
+                    {
+                        "fieldName": "Payment Method"
+                    },
+                    {
+                        "fieldName": "Customer Name"
+                    },
+                    {
+                        "fieldName": "Location"
+                    },
+                    {
+                        "fieldName": "Status"
+                    }
+                ]
+            }
+        }
+    }
+}

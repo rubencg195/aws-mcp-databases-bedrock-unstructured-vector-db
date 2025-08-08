@@ -56,6 +56,36 @@ resource "aws_bedrockagent_knowledge_base" "main" {
   tags = local.tags
 }
 
+
+# KMS Key for Bedrock Knowledge Base (still needed for RDS)
+resource "aws_kms_key" "bedrock_knowledge_base_key" {
+  description = "KMS key for Bedrock Knowledge Base"
+  key_usage = "ENCRYPT_DECRYPT"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {   
+          AWS = [
+            aws_iam_role.bedrock_knowledge_base_role.arn,
+            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+            data.aws_caller_identity.current.arn
+          ]
+        }
+        Action = "kms:*"
+        Resource = "*"
+      }
+    ]
+  })
+  tags = local.tags
+}
+
+resource "aws_kms_alias" "bedrock_knowledge_base_key_alias" {
+  name = "alias/${local.project_name}-bedrock-kb"
+  target_key_id = aws_kms_key.bedrock_knowledge_base_key.key_id
+}
+
 resource "aws_bedrockagent_data_source" "example" {
   knowledge_base_id = aws_bedrockagent_knowledge_base.main.id
   name              = local.project_name
@@ -65,6 +95,34 @@ resource "aws_bedrockagent_data_source" "example" {
     s3_configuration {
       bucket_arn = aws_s3_bucket.knowledge_base_input_data.arn
       inclusion_prefixes = [local.knowledge_base_input_data_prefix]
+    }
+  }
+  vector_ingestion_configuration {
+    chunking_configuration {
+      # SEMANTIC CHUNKING
+      # chunking_strategy = "SEMANTIC" 
+      # semantic_chunking_configuration {
+      #   breakpoint_percentile_threshold = 90
+      #   buffer_size = 1
+      #   max_token = 1024
+      # }
+
+      # FIXED SIZE CHUNKING
+      chunking_strategy = "FIXED_SIZE"
+      fixed_size_chunking_configuration {
+        max_tokens = 4096
+        overlap_percentage = 1
+      }
+
+      # HIERARCHICAL CHUNKING
+      # chunking_strategy = "HIERARCHICAL"
+      # hierarchical_chunking_configuration {
+      #   overlap_tokens = 100
+      #   level_configuration {
+      #     max_tokens = 1024
+      #   }
+      # }
+
     }
   }
   depends_on = [

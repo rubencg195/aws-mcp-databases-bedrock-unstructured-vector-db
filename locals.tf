@@ -17,9 +17,11 @@ locals {
     knowledge_base_csv_files = [
         # "knowledge-base-1.csv",
         "asset-replacements.csv",
+        "asset-replacements.csv.metadata.json",
         # "asset-replacements.xlsm"
     ]
     knowledge_base_input_data_prefix = "input-data/"
+    # mcp_client_model_arn   = "arn:aws:bedrock:${data.aws_region.current.region}::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0" # ONLY 3 AND 3.5 ARE AVAILABLE FOR ON DEMAND
     mcp_client_model_arn   = "arn:aws:bedrock:${data.aws_region.current.region}::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0" # ONLY 3 AND 3.5 ARE AVAILABLE FOR ON DEMAND
     embedding_model_arn    = "arn:aws:bedrock:${data.aws_region.current.region}::foundation-model/amazon.titan-embed-text-v2:0"
     knowledge_base_bucket_storage_uri = "s3://${aws_s3_bucket.knowledge_base_storage.bucket}/"

@@ -121,26 +121,14 @@ resource "aws_iam_role_policy_attachment" "rds_monitoring_policy" {
 }
 
 # Output RDS connection information
-output "rds_endpoint" {
-  description = "RDS cluster endpoint"
-  value       = aws_rds_cluster.bedrock_vector_store.endpoint
-}
-
-output "rds_database_name" {
-  description = "RDS database name"
-  value       = aws_rds_cluster.bedrock_vector_store.database_name
-}
-
-output "rds_username" {
-  description = "RDS master username"
-  value       = aws_rds_cluster.bedrock_vector_store.master_username
-  sensitive   = true
-}
-
-output "rds_password" {
-  description = "RDS master password"
-  value       = random_password.rds_password.result
-  sensitive   = true
+resource "local_file" "rds_connection_info" {
+  filename = "${path.module}/.rds_connection_info.txt"
+  content  = <<EOT
+endpoint      = ${aws_rds_cluster.bedrock_vector_store.endpoint}
+database_name = ${aws_rds_cluster.bedrock_vector_store.database_name}
+username      = ${aws_rds_cluster.bedrock_vector_store.master_username}
+password      = ${random_password.rds_password.result}
+EOT
 }
 
 # Secrets Manager for RDS credentials
