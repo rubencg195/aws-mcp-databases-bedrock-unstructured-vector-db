@@ -1,4 +1,4 @@
-# AWS Bedrock Knowledge Base with RDS PostgreSQL Vector Database
+# AWS Bedrock Knowledge Base with RDS PostgreSQL Vector Unstructured Database
 
 A complete solution for building AI-powered knowledge bases using AWS Bedrock and PostgreSQL with pgvector extension.
 
