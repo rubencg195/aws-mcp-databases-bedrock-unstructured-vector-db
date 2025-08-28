@@ -33,21 +33,6 @@ locals {
     rds_backup_retention_period = 7
     rds_embedding_dimensions = 1024
 
-    website_assets = {
-    "index.html" = {
-      source       = "${path.module}/website/index.html"
-      content_type = "text/html"
-    }
-    "style.css" = {
-      source       = "${path.module}/website/style.css"
-      content_type = "text/css"
-    }
-    "index.js" = {
-      source       = "${path.module}/website/index.js"
-      content_type = "application/javascript"
-    }
-  }
-
     tags = {
         Owner      = "rubencg195@hotmail.com"
         Project     = local.project_name

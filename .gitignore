@@ -20,7 +20,6 @@ terraform.tfstate.*
 
 lambda/*
 .opensearch_collection.txt
-.website_info.txt
 .old
 .dependbuild
 .rds_connection_info.txt

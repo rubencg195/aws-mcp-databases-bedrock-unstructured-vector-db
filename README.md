@@ -139,10 +139,9 @@ aws-mcp-databases/
 ├── bedrock.tf             # Bedrock Knowledge Base
 ├── rds.tf                 # RDS PostgreSQL cluster
 ├── vpc.tf                 # VPC and networking
-├── s3.tf                  # S3 buckets and website
+├── s3.tf                  # S3 buckets
 ├── lambda.tf              # Lambda functions
 ├── knowledge-bases/       # Sample data files
-└── website/               # Static website files
 ```
 
 ## 🗄️ Database Schema
@@ -172,9 +171,6 @@ Required indexes:
 2. Navigate to `mcp-demo-bedrock-invoke`
 3. Create a test event and execute
 
-### Test Website
-1. Check `.website_info.txt` for the website URL
-2. Login with Cognito credentials
 
 ## 🔧 Troubleshooting
 
